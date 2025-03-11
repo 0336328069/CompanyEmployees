@@ -12,5 +12,7 @@ namespace Application.Interfaces
     {
         Task<IdentityUser> GetUserByUsernameAsync(string username);
         Task<string> AuthenticateAsync(string username, string password);
+
+        Task<string> RegisterAsync(string username, string password, string role = "User");
     }
 }

@@ -57,5 +57,29 @@ namespace Application.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        public async Task<string> RegisterAsync(string username, string password, string role = "User")
+        {
+            var existingUser = await _userRepository.GetUserByUsernameAsync(username);
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException("User already exists.");
+            }
+            var user = new IdentityUser
+            {
+                UserName = username,
+            };
+
+            var result = await _userRepository.CreateAsync(user, password, role);
+
+            if (result.Succeeded)
+            {
+                return "User created successfully!";
+            }
+            else
+            {
+                return "User creation failed.";
+            }
+        }
     }
 }

@@ -28,6 +28,27 @@ namespace CompanyEmployees.Controllers
             return Ok(new { Token = token });
         }
 
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            var result = await _userService.RegisterAsync(request.Username, request.Password);
+
+            if (result == "User created successfully!")
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        public class RegisterRequest
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+
+            public string ConfirmPassword { get; set; }
+        }
+
         public class LoginRequest
         {
             public string Username { get; set; }
